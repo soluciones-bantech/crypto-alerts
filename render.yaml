@@ -1,0 +1,16 @@
+name: crypto-alerts
+services:
+  - type: worker
+    name: crypto-alerts-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: INTERVAL_MINUTES
+        value: "5"
+      - key: SYMBOLS
+        value: "BTCUSDT,ETHUSDT,BNBUSDT,SOLUSDT,XRPUSDT,ADAUSDT,DOGEUSDT,AVAXUSDT"
