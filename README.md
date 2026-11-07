@@ -7,11 +7,21 @@ Este proyecto revisa cada 15 minutos las señales de criptomonedas en Binance y 
 1. Abre Telegram y busca **@BotFather**.
 2. Envía `/newbot` y sigue las instrucciones (nombre y usuario terminado en `bot`).
 3. Te dará un **TOKEN** (algo como `123456:ABC-DEF...`). Guárdalo.
-4. Busca tu bot y envíale un mensaje (ej. "hola").
-5. Abre en tu navegador: `https://api.telegram.org/bot<TU_TOKEN>/getUpdates`
-6. Busca `"chat":{"id": 123456789}` — ese número es tu **CHAT_ID**.
 
-## Paso 2 — Subir el proyecto a GitHub
+> Nota: tu bot **no va a responder mensajes** (no es un bot interactivo). Solo sirve para enviarte alertas.
+
+## Paso 2 — Obtener tu CHAT_ID (automático)
+
+El bot puede detectar tu chat_id solo. Para eso:
+
+1. Busca tu bot en Telegram (ej. `@Crypto16Alert_bot`) y **envíale un mensaje** (ej. `hola`). No responderá, pero el mensaje queda guardado.
+2. En GitHub, agrega solo el secreto `TELEGRAM_BOT_TOKEN` (el chat_id se detecta automáticamente en la primera ejecución y se guarda).
+
+Si prefieres ponerlo manualmente, usa uno de estos métodos:
+- **@userinfobot**: búscalo, envía `/start`, te da tu ID.
+- **getUpdates**: abre `https://api.telegram.org/bot<TOKEN>/getUpdates` después de enviar un mensaje a tu bot.
+
+## Paso 3 — Subir el proyecto a GitHub
 
 1. Crea una cuenta en https://github.com (si no tienes).
 2. Crea un repositorio nuevo (ej. `crypto-alerts`), público o privado.
@@ -19,14 +29,14 @@ Este proyecto revisa cada 15 minutos las señales de criptomonedas en Binance y 
    - Puedes usar la web de GitHub: "Add file → Upload files" y arrastrar todo.
    - O con git: `git init && git add . && git commit -m "init" && git remote add origin ... && git push`.
 
-## Paso 3 — Agregar los secretos
+## Paso 4 — Agregar los secretos
 
 En tu repositorio de GitHub:
 1. Ve a **Settings → Secrets and variables → Actions → New repository secret**.
 2. Crea `TELEGRAM_BOT_TOKEN` con tu token.
-3. Crea `TELEGRAM_CHAT_ID` con tu chat id.
+3. (Opcional) Crea `TELEGRAM_CHAT_ID` con tu chat id. Si no lo pones, el bot lo detecta automáticamente la primera vez (recuerda enviar un mensaje a tu bot antes).
 
-## Paso 4 — Activar el workflow
+## Paso 5 — Activar el workflow
 
 1. Ve a la pestaña **Actions** del repositorio.
 2. Si te pide habilitar workflows, acéptalo.

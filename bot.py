@@ -4,13 +4,44 @@ import os, json, time, urllib.request, urllib.parse
 from datetime import datetime
 
 BASE = "https://api.binance.com"
-SYMBOLS = [s.strip() for s in os.getenv("SYMBOLS", "BTCUSDT,ETHUSDT,BNBUSDT,SOLUSDT,XRPUSDT,ADAUSDT,DOGEUSDT,AVAXUSDT").split(",") if s.strip()]
-INTERVAL = os.getenv("INTERVAL", "15m")
-LIMIT = int(os.getenv("LIMIT", "120"))
-CHECK_MINUTES = int(os.getenv("INTERVAL_MINUTES", "5"))
+SYMBOLS = [s.strip() for s in (os.getenv("SYMBOLS") or "BTCUSDT,ETHUSDT,BNBUSDT,SOLUSDT,XRPUSDT,ADAUSDT,DOGEUSDT,AVAXUSDT").split(",") if s.strip()]
+INTERVAL = os.getenv("INTERVAL") or "15m"
+LIMIT = int(os.getenv("LIMIT") or "120")
+CHECK_MINUTES = int(os.getenv("INTERVAL_MINUTES") or "15")
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 STATE_FILE = os.getenv("STATE_FILE", "state.json")
+
+def resolve_chat_id():
+    """Auto-detecta el chat_id si no fue proporcionado (envía un mensaje al bot primero)."""
+    global CHAT_ID
+    if CHAT_ID:
+        return CHAT_ID
+    state = load_state()
+    if state.get("_chat_id"):
+        CHAT_ID = str(state["_chat_id"])
+        return CHAT_ID
+    if not TOKEN:
+        return None
+    try:
+        url = f"https://api.telegram.org/bot{TOKEN}/getUpdates"
+        with urllib.request.urlopen(url, timeout=20) as r:
+            data = json.loads(r.read().decode())
+        results = data.get("result", [])
+        if results:
+            last = results[-1]
+            msg = last.get("message") or last.get("edited_message") or {}
+            chat = msg.get("chat", {})
+            cid = chat.get("id")
+            if cid is not None:
+                CHAT_ID = str(cid)
+                state["_chat_id"] = cid
+                save_state(state)
+                print(f"Chat ID auto-detectado: {cid}")
+                return CHAT_ID
+    except Exception as e:
+        print("No se pudo auto-detectar chat_id:", e)
+    return None
 
 def fetch_klines(symbol, interval=INTERVAL, limit=LIMIT):
     url = f"{BASE}/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
@@ -97,10 +128,18 @@ def save_state(state):
     with open(STATE_FILE, "w") as f: json.dump(state, f, indent=2)
 
 def check_once():
+    resolve_chat_id()
     state = load_state()
+    last_run = state.get("_last_run", 0)
+    if time.time() - last_run < CHECK_MINUTES * 60 - 90:
+        print(f"Aún no toca revisar (cada {CHECK_MINUTES} min). Saltando.")
+        return
     new_state = dict(state)
+    new_state["_last_run"] = time.time()
     alerts = []
-    first_run = (len(state) == 0)
+    first_run = not any(not k.startswith("_") for k in state)
+    if not CHAT_ID:
+        print("CHAT_ID no disponible. Envía un mensaje a tu bot y vuelve a ejecutar.")
     for sym in SYMBOLS:
         try:
             klines = fetch_klines(sym)
