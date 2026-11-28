@@ -1,43 +1,43 @@
 {
-  "_last_run": 1795836958.5176167,
+  "_last_run": 1795840805.469041,
   "BTCUSDT": {
-    "signal": "MANTENER",
-    "price": 60285.21,
-    "updated": "2026-11-21T23:56:20.322064Z"
+    "signal": "VENTA",
+    "price": 60042.01,
+    "updated": "2026-11-28T04:40:05.778489Z"
   },
   "ETHUSDT": {
-    "signal": "MANTENER",
-    "price": 1686.96,
-    "updated": "2026-11-21T23:56:20.496275Z"
+    "signal": "VENTA",
+    "price": 1664.92,
+    "updated": "2026-11-28T04:40:05.973524Z"
   },
   "BNBUSDT": {
     "signal": "MANTENER",
-    "price": 548.72,
-    "updated": "2026-11-21T23:56:20.748127Z"
+    "price": 555.28,
+    "updated": "2026-11-28T04:40:06.148901Z"
   },
   "SOLUSDT": {
     "signal": "MANTENER",
-    "price": 70.36,
-    "updated": "2026-11-21T23:56:20.917717Z"
+    "price": 71.68,
+    "updated": "2026-11-28T04:40:06.321668Z"
   },
   "XRPUSDT": {
     "signal": "MANTENER",
-    "price": 0.9333,
-    "updated": "2026-11-21T23:56:21.089709Z"
+    "price": 0.9494,
+    "updated": "2026-11-28T04:40:06.513349Z"
   },
   "ADAUSDT": {
     "signal": "MANTENER",
-    "price": 0.1447,
-    "updated": "2026-11-21T23:56:21.425081Z"
+    "price": 0.1478,
+    "updated": "2026-11-28T04:40:06.820138Z"
   },
   "DOGEUSDT": {
     "signal": "MANTENER",
-    "price": 0.05533,
-    "updated": "2026-11-21T23:56:21.603381Z"
+    "price": 0.0576,
+    "updated": "2026-11-28T04:40:06.991345Z"
   },
   "AVAXUSDT": {
-    "signal": "MANTENER",
-    "price": 6.589,
-    "updated": "2026-11-21T23:56:21.789790Z"
+    "signal": "VENTA",
+    "price": 6.613,
+    "updated": "2026-11-28T04:40:07.160826Z"
   }
 }
